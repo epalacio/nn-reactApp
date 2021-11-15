@@ -1,17 +1,22 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Modal from './components/Modal.component';
 import Title from './components/Title.component';
 import EventList from './components/EventList.component'
+import NewEventForm from './components/NewEventForm.component';
 
 function App() {
   const [showModal, setShowModal] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
-  const [events, setEvents] = useState([
-    {title: "mario's birthday bash", id: 1},
-    {title: "bowser's live stream", id: 2},
-    {title: "race on moo moo farm", id: 3},
-  ])
+  const [events, setEvents] = useState([])
+
+  const addEvent = (event) => {
+    setEvents((prevEvents) => {
+      return [...prevEvents, event]
+    })
+    setShowModal(false)
+  }
+  
 
   const handleClick = (id) => {
     setEvents((prevEvents) => {
@@ -20,10 +25,6 @@ function App() {
       })
     })
     console.log(id)
-  }
-
-  const handleClose = () => {
-    setShowModal(false)
   }
 
   const subtitle = 'All the latest events in Marioland'
@@ -45,13 +46,14 @@ function App() {
         <h2>10% Off Coupon Code!</h2>
         <p>Use the code NINJA10 at the checkout.</p>
       </Modal> */}
-      {showModal && <Modal handleClose={handleClose} isSalesModal={false}>
-        <h2>Terms and Conditions</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+      {showModal && <Modal isSalesModal={false}>
+        <NewEventForm
+          addEvent={addEvent}
+        />
       </Modal>}
       
       <div>
-        <button onClick={() => setShowModal(true)}>Show Modal</button>
+        <button onClick={() => setShowModal(true)}>Add new event</button>
       </div>
 
     </div>
